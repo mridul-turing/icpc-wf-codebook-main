@@ -3,8 +3,8 @@
  * Date: 2015-02-06
  * License: CC0
  * Source: Folklore
- * Description: Returns $\min(V[a], V[a + 1], \dots, V[b - 1])$
- * in constant time.
+ * Description: Range Minimum Queries on an array. Returns
+ * min(V[a], V[a + 1], ... V[b - 1]) in constant time.
  * Usage:
  *  RMQ rmq(values);
  *  rmq.query(inclusive, exclusive);

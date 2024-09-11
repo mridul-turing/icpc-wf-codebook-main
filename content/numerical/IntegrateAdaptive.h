@@ -13,7 +13,7 @@
  */
 #pragma once
 
-using d = double;
+typedef double d;
 #define S(a,b) (f(a) + 4*f((a+b) / 2) + f(b)) * (b-a) / 6
 
 template <class F>

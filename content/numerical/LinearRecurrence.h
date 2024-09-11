@@ -9,21 +9,19 @@
  * Faster than matrix multiplication.
  * Useful together with Berlekamp--Massey.
  * Usage: linearRec({0, 1}, {1, 1}, k) // k'th Fibonacci number
- * Time: O(n^2 \log k),
- * can be improved to $O(n \log n \log k)$, replace
- * \texttt{combine} (which is a polynomial modulo operation) with FFT.
+ * Time: O(n^2 \log k)
  * Status: bruteforce-tested mod 5 for n <= 5
  */
 #pragma once
 
 const ll mod = 5; /** exclude-line */
 
-using poly = vector<ll>;
-ll linearRec(poly S, poly tr, ll k) {
+typedef vector<ll> Poly;
+ll linearRec(Poly S, Poly tr, ll k) {
 	int n = sz(tr);
 
-	auto combine = [&](poly a, poly b) {
-		poly res(n * 2 + 1);
+	auto combine = [&](Poly a, Poly b) {
+		Poly res(n * 2 + 1);
 		rep(i,0,n+1) rep(j,0,n+1)
 			res[i + j] = (res[i + j] + a[i] * b[j]) % mod;
 		for (int i = 2 * n; i > n; --i) rep(j,0,n)
@@ -32,7 +30,7 @@ ll linearRec(poly S, poly tr, ll k) {
 		return res;
 	};
 
-	poly pol(n + 1), e(pol);
+	Poly pol(n + 1), e(pol);
 	pol[0] = e[1] = 1;
 
 	for (++k; k; k /= 2) {

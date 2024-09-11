@@ -33,7 +33,7 @@ the algorithm is numerically stable and neither \texttt{tr} nor the check for \t
  */
 #pragma once
 
-using T = double;
+typedef double T;
 vector<T> tridiagonal(vector<T> diag, const vector<T>& super,
 		const vector<T>& sub, vector<T> b) {
 	int n = sz(b); vi tr(n);

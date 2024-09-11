@@ -17,7 +17,7 @@
  */
 #pragma once
 
-constexpr int LIM = 1e6;
+const int LIM = 1e6;
 bitset<LIM> isPrime;
 vi eratosthenes() {
 	const int S = (int)round(sqrt(LIM)), R = LIM / 2;

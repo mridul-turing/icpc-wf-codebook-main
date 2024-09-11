@@ -12,7 +12,7 @@
  */
 #pragma once
 
-constexpr ll inf = 1LL << 62;
+const ll inf = 1LL << 62;
 void floydWarshall(vector<vector<ll>>& m) {
 	int n = sz(m);
 	rep(i,0,n) m[i][i] = min(m[i][i], 0LL);

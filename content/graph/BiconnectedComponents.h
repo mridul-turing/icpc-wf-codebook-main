@@ -19,16 +19,16 @@
  */
 #pragma once
 
-vi tin, st;
+vi num, st;
 vector<vector<pii>> ed;
 int Time;
 template<class F>
 int dfs(int at, int par, F& f) {
-	int me = tin[at] = ++Time, top = me;
+	int me = num[at] = ++Time, top = me;
 	for (auto [y, e] : ed[at]) if (e != par) {
-		if (tin[y]) {
-			top = min(top, tin[y]);
-			if (tin[y] < me)
+		if (num[y]) {
+			top = min(top, num[y]);
+			if (num[y] < me)
 				st.push_back(e);
 		} else {
 			int si = sz(st);
@@ -48,6 +48,6 @@ int dfs(int at, int par, F& f) {
 
 template<class F>
 void bicomps(F f) {
-	tin.assign(sz(ed), 0);
-	rep(i,0,sz(ed)) if (!tin[i]) dfs(i, -1, f);
+	num.assign(sz(ed), 0);
+	rep(i,0,sz(ed)) if (!num[i]) dfs(i, -1, f);
 }

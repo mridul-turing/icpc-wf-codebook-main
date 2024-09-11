@@ -11,29 +11,30 @@
 #pragma once
 
 struct Node {
-	Node *l = nullptr, *r = nullptr;
+	Node *l = 0, *r = 0;
 	int val, y, c = 1;
-	Node(int val) : val(val), y(rng()) {}
-	void push();
-	void pull();
+	Node(int val) : val(val), y(rand()) {}
+	void recalc();
 };
 
 int cnt(Node* n) { return n ? n->c : 0; }
-void Node::push() {}
-void Node::pull() { c = cnt(l) + cnt(r) + 1; }
+void Node::recalc() { c = cnt(l) + cnt(r) + 1; }
+
+template<class F> void each(Node* n, F f) {
+	if (n) { each(n->l, f); f(n->val); each(n->r, f); }
+}
 
 pair<Node*, Node*> split(Node* n, int k) {
 	if (!n) return {};
-	n->push();
-	if (cnt(n->l) >= k) {  // "n->val >= k" for lower_bound(k)
+	if (cnt(n->l) >= k) { // "n->val >= k" for lower_bound(k)
 		auto pa = split(n->l, k);
 		n->l = pa.second;
-		n->pull();
+		n->recalc();
 		return {pa.first, n};
 	} else {
-		auto pa = split(n->r, k - cnt(n->l) - 1);  // and just "k"
+		auto pa = split(n->r, k - cnt(n->l) - 1); // and just "k"
 		n->r = pa.first;
-		n->pull();
+		n->recalc();
 		return {n, pa.second};
 	}
 }
@@ -42,14 +43,25 @@ Node* merge(Node* l, Node* r) {
 	if (!l) return r;
 	if (!r) return l;
 	if (l->y > r->y) {
-		l->push();
 		l->r = merge(l->r, r);
-		l->pull();
+		l->recalc();
 		return l;
 	} else {
-		r->push();
 		r->l = merge(l, r->l);
-		r->pull();
+		r->recalc();
 		return r;
 	}
+}
+
+Node* ins(Node* t, Node* n, int pos) {
+	auto pa = split(t, pos);
+	return merge(merge(pa.first, n), pa.second);
+}
+
+// Example application: move the range [l, r) to index k
+void move(Node*& t, int l, int r, int k) {
+	Node *a, *b, *c;
+	tie(a,b) = split(t, l); tie(b,c) = split(b, r - l);
+	if (k <= l) t = merge(ins(a, b, k), c);
+	else t = merge(a, ins(c, b, k - r));
 }

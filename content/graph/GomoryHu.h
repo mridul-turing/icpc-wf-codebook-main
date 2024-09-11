@@ -18,7 +18,7 @@
 
 #include "PushRelabel.h"
 
-using Edge = array<ll, 3>;
+typedef array<ll, 3> Edge;
 vector<Edge> gomoryHu(int N, vector<Edge> ed) {
 	vector<Edge> tree;
 	vi par(N);

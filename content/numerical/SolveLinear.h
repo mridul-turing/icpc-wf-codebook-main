@@ -9,8 +9,8 @@
  */
 #pragma once
 
-using vd = vector<double>;
-constexpr double eps = 1e-12;
+typedef vector<double> vd;
+const double eps = 1e-12;
 
 int solveLinear(vector<vd>& A, vd& b, vd& x) {
 	int n = sz(A), m = sz(x), rank = 0, br, bc;

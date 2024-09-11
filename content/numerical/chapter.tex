@@ -1,31 +1,11 @@
 \chapter{Numerical}
 
 \section{Polynomials and recurrences}
-  %\kactlimport{Polynomial.h}
+  \kactlimport{Polynomial.h}
   \kactlimport{PolyRoots.h}
   \kactlimport{PolyInterpolate.h}
-
-  To interpolate in $O(n \log^2 n)$,let $Q(x) = \prod_{j}(x - x_j)$, $Q'(x_i)$
-  gives $\prod_{j \neq i}(x_i - x_j) $.Then divide and conquer to compute the
-  polynomial.
-
   \kactlimport{BerlekampMassey.h}
   \kactlimport{LinearRecurrence.h}
-
-  Newton-Raphson method, $F$ is a polynomial operation,
-  \[
-	  F(Q) = 0 \implies Q_{k + 1} = Q_k - F(Q_k) / F'(Q_k) \mod x^{2^{k + 1}}
-  \]
-  Useful examples,
-  \begin{align*}
-	  P^{-1} &: Q_{k + 1} = Q_k(2 - PQ_k) \mod x^{2^{k + 1}}\\
-	  \exp(P)&: Q_{k + 1} = Q_k(1 + P - \ln Q_k) \mod x^{2^{k + 1}}\\
-	  P^{1/m}&: Q_{k + 1} = ((m - 1) Q_k + P Q_k^{-(m - 1)}) / m \mod x^{2^{k + 1}}
-  \end{align*}
-  If $P^R(x)$ is the reverse of $P(x)$, compute $\mod$ like this,
-  \begin{align*}
-	  A &= BD + R &\implies D^R(x) &= A^R(x) (B^R(x))^{-1} \mod x^{n - m + 1}
-  \end{align*}
 
 \section{Optimization}
   \kactlimport{GoldenSectionSearch.h}
@@ -41,13 +21,11 @@
   \kactlimport{SolveLinear2.h}
   \kactlimport{SolveLinearBinary.h}
   \kactlimport{MatrixInverse.h}
-  \kactlimport{MatrixInverse-mod.h}
+  % \kactlimport{MatrixInverse-mod.h}
   \kactlimport{Tridiagonal.h}
 
 \section{Fourier transforms}
 	\kactlimport{FastFourierTransform.h}
-	\kactlimport{FastFourierTransform2d.h}
 	\kactlimport{FastFourierTransformMod.h}
 	\kactlimport{NumberTheoreticTransform.h}
 	\kactlimport{FastSubsetTransform.h}
-	\kactlimport{SubsetConvolution.h}

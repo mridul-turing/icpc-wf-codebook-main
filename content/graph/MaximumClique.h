@@ -10,11 +10,11 @@
  * faster for sparse graphs.
  * Status: stress-tested
  */
-using vb = vector<bitset<200>>;
+typedef vector<bitset<200>> vb;
 struct Maxclique {
 	double limit=0.025, pk=0;
 	struct Vertex { int i, d=0; };
-	using vv = vector<Vertex>;
+	typedef vector<Vertex> vv;
 	vb e;
 	vv V;
 	vector<vi> C;

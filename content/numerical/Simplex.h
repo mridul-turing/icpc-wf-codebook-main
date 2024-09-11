@@ -15,11 +15,11 @@
  */
 #pragma once
 
-using T = double; // long double, Rational, double + mod<P>...
-using vd = vector<T>;
-using vvd = vector<vd>;
+typedef double T; // long double, Rational, double + mod<P>...
+typedef vector<T> vd;
+typedef vector<vd> vvd;
 
-constexpr T eps = 1e-8, inf = 1/.0;
+const T eps = 1e-8, inf = 1/.0;
 #define MP make_pair
 #define ltj(X) if(s == -1 || MP(X[j],N[j]) < MP(X[s],N[s])) s=j
 

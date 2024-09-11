@@ -5,43 +5,61 @@
  * Source: https://codeforces.com/blog/entry/53170, https://github.com/bqi343/USACO/blob/master/Implementations/content/graphs%20(12)/Trees%20(10)/HLD%20(10.3).h
  * Description: Decomposes a tree into vertex disjoint heavy paths and light
  * edges such that the path from any leaf to the root contains at most log(n)
- * light edges. Takes as input the full adjacency list.
- * VALS\_EDGES being true means that values are stored in the edges,
- * as opposed to the nodes. Root must be 0.
+ * light edges. Code does additive modifications and max queries, but can
+ * support commutative segtree modifications/queries on paths and subtrees.
+ * Takes as input the full adjacency list. VALS\_EDGES being true means that
+ * values are stored in the edges, as opposed to the nodes. All values
+ * initialized to the segtree default. Root must be 0.
+ * Time: O((\log N)^2)
  * Status: stress-tested against old HLD
  */
 #pragma once
 
+#include "../data-structures/LazySegmentTree.h"
+
 template <bool VALS_EDGES> struct HLD {
-	int N, T = 0;
-	vector<vi> g;
-	vi par, sub, dep, nxt, tin;
-	HLD(vector<vi> g_)
-		: N(sz(g_)), g(g_), par(N, -1), sub(N, 1), dep(N),
-		  nxt(N),tin(N){ dfsSz(0); dfsHld(0); }
-	void dfsSz(int u) {
-		for (int& v : g[u]) {
-			g[v].erase(find(all(g[v]), u));
-			par[v] = u, dep[v] = dep[u] + 1;
-			dfsSz(v);
-			sub[u] += sub[v];
-			if (sub[v] > sub[g[u][0]]) swap(v, g[u][0]);
+	int N, tim = 0;
+	vector<vi> adj;
+	vi par, siz, rt, pos;
+	Node *tree;
+	HLD(vector<vi> adj_)
+		: N(sz(adj_)), adj(adj_), par(N, -1), siz(N, 1),
+		  rt(N),pos(N),tree(new Node(0, N)){ dfsSz(0); dfsHld(0); }
+	void dfsSz(int v) {
+		if (par[v] != -1) adj[v].erase(find(all(adj[v]), par[v]));
+		for (int& u : adj[v]) {
+			par[u] = v;
+			dfsSz(u);
+			siz[v] += siz[u];
+			if (siz[u] > siz[adj[v][0]]) swap(u, adj[v][0]);
 		}
 	}
-	void dfsHld(int u) {
-		tin[u] = T++;
-		for (int v : g[u]) {
-			nxt[v] = (v == g[u][0] ? nxt[u] : v);
-			dfsHld(v);
+	void dfsHld(int v) {
+		pos[v] = tim++;
+		for (int u : adj[v]) {
+			rt[u] = (u == adj[v][0] ? rt[v] : u);
+			dfsHld(u);
 		}
 	}
-	template <class F> void process_path(int u, int v, F op) {
-		for (; nxt[u] != nxt[v]; v = par[nxt[v]]) {
-			if (dep[nxt[u]] > dep[nxt[v]]) swap(u, v);
-			op(tin[nxt[v]], tin[v] + 1);
+	template <class B> void process(int u, int v, B op) {
+		for (; rt[u] != rt[v]; v = par[rt[v]]) {
+			if (pos[rt[u]] > pos[rt[v]]) swap(u, v);
+			op(pos[rt[v]], pos[v] + 1);
 		}
-		if (dep[u] > dep[v]) swap(u, v);
-		op(tin[u] + VALS_EDGES, tin[v] + 1);
+		if (pos[u] > pos[v]) swap(u, v);
+		op(pos[u] + VALS_EDGES, pos[v] + 1);
 	}
-	// process_subtree(u): [tin[u] + VALS_EDGES, tin[u] + sub[v])
+	void modifyPath(int u, int v, int val) {
+		process(u, v, [&](int l, int r) { tree->add(l, r, val); });
+	}
+	int queryPath(int u, int v) { // Modify depending on problem
+		int res = -1e9;
+		process(u, v, [&](int l, int r) {
+				res = max(res, tree->query(l, r));
+		});
+		return res;
+	}
+	int querySubtree(int v) { // modifySubtree is similar
+		return tree->query(pos[v] + VALS_EDGES, pos[v] + siz[v]);
+	}
 };

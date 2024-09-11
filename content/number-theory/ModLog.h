@@ -5,7 +5,7 @@
  * Source: own work
  * Description: Returns the smallest $x > 0$ s.t. $a^x = b \pmod m$, or
  * $-1$ if no such $x$ exists. modLog(a,1,m) can be used to
- * calculate the order of $a$. Doesn't require $\gcd(a, m) = 1$.
+ * calculate the order of $a$.
  * Time: $O(\sqrt m)$
  * Status: tested for all 0 <= a,x < 500 and 0 < m < 500.
  *
@@ -38,7 +38,7 @@ ll modLog(ll a, ll b, ll m) {
 	while (j <= n && (e = f = e * a % m) != b % m)
 		A[e * b % m] = j++;
 	if (e == b % m) return j;
-	if (gcd(m, e) == gcd(m, b)) 
+	if (__gcd(m, e) == __gcd(m, b)) 
 		rep(i,2,n+2) if (A.count(e = e * f % m))
 			return n * i - A[e];
 	return -1;

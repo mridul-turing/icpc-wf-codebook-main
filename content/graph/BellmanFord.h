@@ -11,7 +11,7 @@
  */
 #pragma once
 
-constexpr ll inf = LLONG_MAX;
+const ll inf = LLONG_MAX;
 struct Ed { int a, b, w, s() { return a < b ? a : -a; }};
 struct Node { ll dist = inf; int prev = -1; };
 

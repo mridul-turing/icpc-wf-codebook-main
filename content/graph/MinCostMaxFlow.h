@@ -12,7 +12,7 @@
 
 // #include <bits/extc++.h> /// include-line, keep-include
 
-constexpr ll INF = numeric_limits<ll>::max() / 4;
+const ll INF = numeric_limits<ll>::max() / 4;
 
 struct MCMF {
 	struct edge {

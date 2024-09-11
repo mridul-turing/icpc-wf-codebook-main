@@ -3,13 +3,13 @@
 \section{Fundamentals}
 	\kactlimport{BellmanFord.h}
 	\kactlimport{FloydWarshall.h}
-	%\kactlimport{TopoSort.h}
+	\kactlimport{TopoSort.h}
 
 \section{Network flow}
 	\kactlimport{PushRelabel.h}
 	\kactlimport{MinCostMaxFlow.h}
 	\kactlimport{EdmondsKarp.h}
-	\kactlimport{Dinic.h}
+	% \kactlimport{Dinic.h}
 	\kactlimport{MinCut.h}
 	\kactlimport{GlobalMinCut.h}
 	\kactlimport{GomoryHu.h}
@@ -24,7 +24,6 @@
 \section{DFS algorithms}
 	\kactlimport{SCC.h}
 	\kactlimport{BiconnectedComponents.h}
-	\kactlimport{ArticulationPoints.h}
 	\kactlimport{2sat.h}
 	\kactlimport{EulerWalk.h}
 
@@ -42,10 +41,7 @@
 	\kactlimport{CompressTree.h}
 	\kactlimport{HLD.h}
 	\kactlimport{LinkCutTree.h}
-	\kactlimport{BicsiLinkCutTree.h}
-	\kactlimport{RerootDP.h}
 	\kactlimport{DirectedMST.h}
-	\kactlimport{DominatorTree.h}
 
 \section{Math}
 	\subsection{Number of Spanning Trees}
@@ -57,7 +53,7 @@
 		Remove the $i$th row and column and take the determinant; this yields the number of directed spanning trees rooted at $i$
 		(if $G$ is undirected, remove any row/column).
 
-	\subsection{Graph Realization Problem}
+	\subsection{Erdős–Gallai theorem}
 		% Source: https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93Gallai_theorem
 		% Test: stress-tests/graph/erdos-gallai.cpp
 		A simple graph with node degrees $d_1 \ge \dots \ge d_n$ exists iff $d_1 + \dots + d_n$ is even and for every $k = 1\dots n$,
