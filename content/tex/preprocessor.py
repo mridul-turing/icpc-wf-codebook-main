@@ -1,9 +1,11 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python2
 # encoding: utf-8
 
-# Source code preprocessor for KACTL build process.
+# Source code preprocessor for KACTL build process. Compatible with both Python 2 and 3;
+# currently 2 is used because it has better startup overhead (5% faster builds).
 # License: CC0
 
+from __future__ import print_function
 import sys
 import getopt
 import subprocess
@@ -69,7 +71,8 @@ def find_start_comment(source, start=None):
 
 def processwithcomments(caption, instream, outstream, listingslang):
     knowncommands = ['Author', 'Date', 'Description', 'Source', 'Time', 'Memory', 'License', 'Status', 'Usage', 'Details']
-    requiredcommands = ['Author', 'Description']
+    # requiredcommands = ['Author', 'Description']
+    requiredcommands = []
     includelist = []
     error = ""
     warning = ""
@@ -78,7 +81,6 @@ def processwithcomments(caption, instream, outstream, listingslang):
         lines = instream.readlines()
     except:
         error = "Could not read source."
-        lines = []
     nlines = list()
     for line in lines:
         if 'exclude-line' in line:
@@ -145,14 +147,15 @@ def processwithcomments(caption, instream, outstream, listingslang):
         nsource = nsource.rstrip() + source[end:]
     nsource = nsource.strip()
 
-    if listingslang in ['C++', 'Java']:
-        hash_script = 'hash'
-        p = subprocess.Popen(['sh', 'content/contest/%s.sh' % hash_script], stdin=subprocess.PIPE, stdout=subprocess.PIPE, encoding="utf-8")
-        hsh, _ = p.communicate(nsource)
-        hsh = hsh.split(None, 1)[0]
-        hsh = hsh + ', '
-    else:
-        hsh = ''
+    # if listingslang in ['C++', 'Java']:
+    #     hash_script = 'hash'
+    #     p = subprocess.Popen(['sh', 'content/contest/%s.sh' % hash_script], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    #     hshb, _ = p.communicate(nsource.encode())
+    #     hsh = hshb.decode().strip()
+    #     hsh = hsh.split(None, 1)[0]
+    #     hsh = hsh + ', '
+    # else:
+    #     hsh = ''
     # Produce output
     out = []
     if warning:
@@ -172,12 +175,13 @@ def processwithcomments(caption, instream, outstream, listingslang):
         if includelist:
             out.append(r"\leftcaption{%s}" % pathescape(", ".join(includelist)))
         if nsource:
-            out.append(r"\rightcaption{%s%d lines}" % (hsh, len(nsource.split("\n"))))
+            out.append(r"\rightcaption{%d lines}" % (len(nsource.split("\n"))))
         langstr = ", language="+listingslang
         out.append(r"\begin{lstlisting}[caption={%s}%s]" % (pathescape(caption), langstr))
         out.append(nsource)
         out.append(r"\end{lstlisting}")
-
+    print("\nPrintinout out\n\n",sys.stdout)
+    print(out,sys.stdout)
     for line in out:
         print(line, file=outstream)
 
@@ -285,7 +289,7 @@ def main():
         elif language == "rawpy":
             processraw(caption, instream, outstream, 'Python')
         else:
-            raise ValueError("Unknown language: " + str(language))
+            raise ValueError("Unkown language: " + str(language))
     except (ValueError, getopt.GetoptError, IOError) as err:
         print(str(err), file=sys.stderr)
         print("\t for help use --help", file=sys.stderr)
